@@ -21,7 +21,7 @@ target = sys.argv[1]
 def post_data(path, data_dict):
 	req = urllib2.Request(path)
 	req.add_header('Content-type', 'multipart/form-data')
-	r = urllib2.urlopen(path, urllib.urlencode(data_dict))
+	r = urllib2.urlopen(path, urllib.urlencode(data_dict), 5)
 	content = r.read()
 	return content
 
