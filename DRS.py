@@ -80,7 +80,8 @@ if __name__ == "__main__":
 	print "Testing",dmn,"WAIT ...",
 	version = testvuln(target)
 	if version != 8 and version != 7:
-		print "\rThis server doesn't host a vulnerable Drupal          "
+		print "\rError during the connection                       "
+		print "Probably, this server doesn't host a vulnerable Drupal"
 		sys.exit()
 	print "Connected to",dmn
 	print "# CTRL+D to quit\n"
